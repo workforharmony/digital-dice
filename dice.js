@@ -1,19 +1,19 @@
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 let scene, camera, renderer, dice, controls;
 let rolling = false;
 
 function init() {
-    const canvas = document.createElement('canvas');
-    document.body.appendChild(canvas);
-
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(3, 3, 5);
 
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -25,12 +25,12 @@ function init() {
 
     const textureLoader = new THREE.TextureLoader();
     const diceTextures = [
-        textureLoader.load('https://i.imgur.com/6YAnSgT.png'), // 1 dot
-        textureLoader.load('https://i.imgur.com/YV6rTSQ.png'), // 2 dots
-        textureLoader.load('https://i.imgur.com/AjPjP6U.png'), // 3 dots
-        textureLoader.load('https://i.imgur.com/YPc0TFV.png'), // 4 dots
-        textureLoader.load('https://i.imgur.com/2NqQAYJ.png'), // 5 dots
-        textureLoader.load('https://i.imgur.com/NkE6kH6.png')  // 6 dots
+        textureLoader.load("https://i.imgur.com/6YAnSgT.png"), // 1 dot
+        textureLoader.load("https://i.imgur.com/YV6rTSQ.png"), // 2 dots
+        textureLoader.load("https://i.imgur.com/AjPjP6U.png"), // 3 dots
+        textureLoader.load("https://i.imgur.com/YPc0TFV.png"), // 4 dots
+        textureLoader.load("https://i.imgur.com/2NqQAYJ.png"), // 5 dots
+        textureLoader.load("https://i.imgur.com/NkE6kH6.png")  // 6 dots
     ];
 
     const materials = diceTextures.map(texture => new THREE.MeshStandardMaterial({ map: texture }));
@@ -39,8 +39,8 @@ function init() {
     dice = new THREE.Mesh(geometry, materials);
     scene.add(dice);
 
-    window.addEventListener('resize', onWindowResize, false);
-    document.addEventListener('click', rollDice);
+    window.addEventListener("resize", onWindowResize, false);
+    document.addEventListener("click", rollDice);
     animate();
 }
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Dice</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            max-width: 500px; /* Ensures dice looks great on large screens */
+            max-height: 500px;
+            display: block;
+        }
+        .instructions {
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            user-select: none;
+        }
+        @media (max-width: 600px) {
+            .instructions {
+                font-size: 16px;
+                top: 15px;
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">🎲 Tap or Click the Dice to Roll 🎲</div>
+    <canvas id="diceCanvas"></canvas>
+    
+    <!-- Three.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- Our Dice JavaScript -->
+    <script src="dice.js"></script>
+</body>
+</html>

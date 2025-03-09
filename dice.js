@@ -78,9 +78,9 @@ function rollDice() {
         const progress = elapsed / duration;
         
         if (progress < 1) {
-            dice.rotation.x += (endX - dice.rotation.x) * 1 + (Math.random() - 0.9) * 0.9;
-            dice.rotation.y += (endY - dice.rotation.y) * 1 + (Math.random() - 0.9) * 0.9;
-            dice.rotation.z += (endZ - dice.rotation.z) * 1 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.x += (endX - dice.rotation.x) * 5 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.y += (endY - dice.rotation.y) * 5 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.z += (endZ - dice.rotation.z) * 5 + (Math.random() - 0.9) * 0.9;
             requestAnimationFrame(animateRoll);
         } else {
             dice.rotation.x = endX;

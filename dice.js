@@ -24,14 +24,14 @@ function init() {
     scene.add(ambientLight);
 
     const textureLoader = new THREE.TextureLoader();
-    const diceTextures = [
-        textureLoader.load("https://i.imgur.com/6YAnSgT.png"), // 1 dot
-        textureLoader.load("https://i.imgur.com/YV6rTSQ.png"), // 2 dots
-        textureLoader.load("https://i.imgur.com/AjPjP6U.png"), // 3 dots
-        textureLoader.load("https://i.imgur.com/YPc0TFV.png"), // 4 dots
-        textureLoader.load("https://i.imgur.com/2NqQAYJ.png"), // 5 dots
-        textureLoader.load("https://i.imgur.com/NkE6kH6.png")  // 6 dots
-    ];
+const diceTextures = [
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-1.png"), // 1 dot
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-2.png"), // 2 dots
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-3.png"), // 3 dots
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-4.png"), // 4 dots
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-5.png"), // 5 dots
+    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-6.png")  // 6 dots
+];
 
     const materials = diceTextures.map(texture => new THREE.MeshStandardMaterial({ map: texture }));
 

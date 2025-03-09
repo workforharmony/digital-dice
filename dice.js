@@ -8,7 +8,7 @@ let rolling = false;
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(2, 2, 6);
+    camera.position.set(1, 2, 6);
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -78,9 +78,9 @@ function rollDice() {
         const progress = elapsed / duration;
         
         if (progress < 1) {
-            dice.rotation.x += (endX - dice.rotation.x) * 0.9 + (Math.random() - 0.9) * 0.9;
-            dice.rotation.y += (endY - dice.rotation.y) * 0.9 + (Math.random() - 0.9) * 0.9;
-            dice.rotation.z += (endZ - dice.rotation.z) * 0.9 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.x += (endX - dice.rotation.x) * 1 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.y += (endY - dice.rotation.y) * 1 + (Math.random() - 0.9) * 0.9;
+            dice.rotation.z += (endZ - dice.rotation.z) * 1 + (Math.random() - 0.9) * 0.9;
             requestAnimationFrame(animateRoll);
         } else {
             dice.rotation.x = endX;
@@ -88,7 +88,7 @@ function rollDice() {
             dice.rotation.z = endZ;
             rolling = false;
             setTimeout(() => {
-                camera.position.set(2, 2, 6);
+                camera.position.set(1, 2, 6);
                 camera.lookAt(dice.position);
             }, 500);
         }

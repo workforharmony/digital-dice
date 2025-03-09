@@ -76,11 +76,11 @@ function rollDice() {
     function animateRoll() {
         const elapsed = Date.now() - startTime;
         const progress = elapsed / duration;
-
+        
         if (progress < 1) {
-            dice.rotation.x += (endX - dice.rotation.x) * 0.15;
-            dice.rotation.y += (endY - dice.rotation.y) * 0.15;
-            dice.rotation.z += (endZ - dice.rotation.z) * 0.15;
+            dice.rotation.x += (endX - dice.rotation.x) * 0.2 + Math.random() * 0.2;
+            dice.rotation.y += (endY - dice.rotation.y) * 0.2 + Math.random() * 0.2;
+            dice.rotation.z += (endZ - dice.rotation.z) * 0.2 + Math.random() * 0.2;
             requestAnimationFrame(animateRoll);
         } else {
             dice.rotation.x = endX;

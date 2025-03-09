@@ -7,8 +7,8 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden;
             background-color: #f0f4f8;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -27,15 +27,12 @@
 </head>
 <body>
     <div id="instructions">🎲 Tap or Click the Dice to Roll 🎲</div>
-    <canvas id="diceCanvas"></canvas>
 
-    <!-- Three.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-
-    <!-- GLTF Loader (fix added here) -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <!-- Three.js Library -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js"></script>
 
     <!-- Dice JavaScript -->
-    <script src="dice.js"></script>
+    <script type="module" src="dice.js"></script>
 </body>
 </html>

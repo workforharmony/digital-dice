@@ -86,8 +86,8 @@ function rollDice() {
             dice.rotation.z = endZ;
             rolling = false;
             setTimeout(() => {
-                controls.target.set(dice.position.x, dice.position.y, dice.position.z);
-                controls.update();
+                camera.position.set(dice.position.x, dice.position.y + 2, dice.position.z + 2);
+                camera.lookAt(dice.position);
             }, 500);
         }
     }

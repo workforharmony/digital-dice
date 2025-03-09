@@ -1,15 +1,14 @@
-let scene, camera, renderer, dice, rolling;
-init();
+let scene, camera, renderer, dice;
+let rolling = false;
 
 function init() {
     const canvas = document.getElementById('diceCanvas');
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-    camera.position.set(0, 2, 6);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(0, 1.5, 4);
 
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     window.addEventListener('resize', () => {
@@ -18,14 +17,16 @@ function init() {
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     });
 
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
     const loader = new THREE.GLTFLoader();
-    loader.load('https://models.babylonjs.com/Dice/glTF/Dice.glb', function (gltf) {
+    loader.load('https://cdn.jsdelivr.net/gh/Rajavasanthan/3D-Dice@main/dice.glb', function (gltf) {
         dice = gltf.scene;
-        dice.scale.set(1.5, 1.5, 1.5);
+        dice.scale.set(0.5, 0.5, 0.5);
         scene.add(dice);
     });
 
-    rolling = false;
     canvas.addEventListener('click', rollDice);
     animate();
 }
@@ -39,42 +40,38 @@ function rollDice() {
     if (rolling) return;
     rolling = true;
 
-    const duration = 2500;
+    const rollTime = 2000;
     const startTime = Date.now();
 
-    const randomX = Math.PI * (4 + Math.random() * 2);
-    const randomY = Math.PI * (4 + Math.random() * 2);
-    const randomZ = Math.PI * (4 + Math.random() * 2);
+    const endX = dice.rotation.x + Math.PI * (4 + Math.random() * 4);
+    const endY = dice.rotation.y + Math.PI * (4 + Math.random() * 4);
+    const endZ = dice.rotation.z + Math.PI * (4 + Math.random() * 4);
 
-    function animateDice() {
+    function animateRoll() {
         const elapsed = Date.now() - startTime;
-        const progress = elapsed / duration;
+        const fraction = elapsed / rollTime;
 
-        if (progress < 1) {
+        if (fraction < 1) {
             dice.rotation.x += 0.2;
             dice.rotation.y += 0.2;
             dice.rotation.z += 0.2;
-            requestAnimationFrame(animate);
+            requestAnimationFrame(rollAnimation);
         } else {
-            dice.rotation.set(randomX, randomY, randomZ);
+            dice.rotation.x = endX;
+            dice.rotation.y = endY;
             rolling = false;
         }
     }
 
-    animate();
+    rollAnimation();
 
-    function animate() {
+    function rollAnimation() {
         requestAnimationFrame(animateDice);
         renderer.render(scene, camera);
     }
 
-    function animateDice() {
-        if (rolling) animateRoll();
-        renderer.render(scene, camera);
-    }
-
-    function animateDice() {
-        requestAnimationFrame(animateDice);
+    function rollAnimation() {
+        requestAnimationFrame(animate);
         renderer.render(scene, camera);
     }
 }

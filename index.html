@@ -7,35 +7,35 @@
     <style>
         body {
             margin: 0;
-            background-color: #f0f4f8;
             overflow: hidden;
+            background-color: #f0f4f8;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
         }
         #instructions {
             position: absolute;
             top: 20px;
-            width: 100%;
-            text-align: center;
-            font-size: 20px;
+            font-size: 18px;
             color: #333;
+            text-align: center;
             user-select: none;
         }
     </style>
 </head>
 <body>
-    <div id="instructions">🎲 Tap or Click to Roll the Dice 🎲</div>
+    <div id="instructions">🎲 Tap or Click the Dice to Roll 🎲</div>
     <canvas id="diceCanvas"></canvas>
 
-    <!-- Three.js -->
+    <!-- Three.js library -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <!-- GLTF Loader for realistic dice model -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 
-    <!-- Dice JavaScript (will update next step) -->
+    <!-- GLTF Loader (fix added here) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.min.js"></script>
+
+    <!-- Dice JavaScript -->
     <script src="dice.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Enhanced 3D Dice UI</title>
-  <!-- Import map to resolve bare module specifiers -->
+  <!-- Import map for Three.js -->
   <script type="importmap">
     {
       "imports": {
@@ -13,9 +13,14 @@
     }
   </script>
   <style>
-    /* Full-page animated gradient background */
-    body {
+    /* Ensure html and body take up full height */
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    /* Full-page animated gradient background (remains unchanged) */
+    body {
       overflow: hidden;
       background: linear-gradient(270deg, #a1c4fd, #fbc2eb, #ffecd2, #fbc2eb, #a1c4fd);
       background-size: 300% 300%;
@@ -36,9 +41,8 @@
       z-index: 0;
       display: block;
       background: transparent !important;
-
     }
-    /* Instruction text container (only this container changes color) */
+    /* Instruction text container styling (only this container changes color) */
     #instructions {
       position: absolute;
       top: 20px;
@@ -65,7 +69,7 @@
   </style>
 </head>
 <body>
-  <!-- This is the instruction container that will now be black with white text -->
+  <!-- Instruction container remains unchanged -->
   <div id="instructions">Tap on screen to roll dice</div>
   <script type="module" src="./dice.js"></script>
 </body>

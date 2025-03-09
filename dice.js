@@ -56,28 +56,44 @@ function rollDice() {
 
     const duration = 2000;
     const startTime = Date.now();
-    const targetRotationX = dice.rotation.x + Math.PI * (2 + Math.random() * 2);
-    const targetRotationY = dice.rotation.y + Math.PI * (2 + Math.random() * 2);
-    const targetRotationZ = dice.rotation.z + Math.PI * (2 + Math.random() * 2);
+
+    // Choose a random final face (1-6)
+    const finalFace = Math.floor(Math.random() * 6) + 1;
+
+    // Set final rotation angles to align with each face
+    const faceRotations = {
+        1: { x: 0, y: 0, z: 0 },
+        2: { x: 0, y: Math.PI / 2, z: 0 },
+        3: { x: -Math.PI / 2, y: 0, z: 0 },
+        4: { x: Math.PI / 2, y: 0, z: 0 },
+        5: { x: 0, y: -Math.PI / 2, z: 0 },
+        6: { x: Math.PI, y: 0, z: 0 }
+    };
+
+    const { x: endX, y: endY, z: endZ } = faceRotations[finalFace];
 
     function animateRoll() {
         const elapsed = Date.now() - startTime;
         const progress = elapsed / duration;
 
         if (progress < 1) {
+            // Continue spinning
             dice.rotation.x += 0.2;
             dice.rotation.y += 0.2;
             dice.rotation.z += 0.2;
             requestAnimationFrame(animateRoll);
         } else {
-            dice.rotation.x = targetRotationX;
-            dice.rotation.y = targetRotationY;
-            dice.rotation.z = targetRotationZ;
+            // Snap to the correct face
+            dice.rotation.x = endX;
+            dice.rotation.y = endY;
+            dice.rotation.z = endZ;
             rolling = false;
         }
     }
+
     animateRoll();
 }
+
 
 function animate() {
     requestAnimationFrame(animate);

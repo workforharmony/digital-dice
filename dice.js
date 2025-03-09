@@ -86,8 +86,7 @@ function rollDice() {
             dice.rotation.z = endZ;
             rolling = false;
             setTimeout(() => {
-                camera.position.set(3, 3, 5);
-                camera.lookAt(dice.position);
+                controls.reset(); // Reset orbit control to ensure only one face is visible
             }, 500);
         }
     }

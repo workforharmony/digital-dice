@@ -1,20 +1,15 @@
-let scene, camera, renderer, dice;
-let rolling = false;
+let scene, camera, renderer, dice, rolling;
+init();
 
 function init() {
     const canvas = document.getElementById('diceCanvas');
-
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(
-        45,
-        canvas.clientWidth / canvas.clientHeight,
-        0.1,
-        1000
-    );
-    camera.position.set(0, 0, 7);
+    camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    camera.position.set(0, 2, 6);
+    camera.lookAt(0, 0, 0);
 
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     window.addEventListener('resize', () => {
@@ -23,41 +18,16 @@ function init() {
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     });
 
-    const diceMaterials = [
-        createDiceFace('1'),
-        createDiceFace('2'),
-        createDiceFace('3'),
-        createDiceFace('4'),
-        createDiceFace('5'),
-        createDiceFace('6'),
-    ];
+    const loader = new THREE.GLTFLoader();
+    loader.load('https://models.babylonjs.com/Dice/glTF/Dice.glb', function (gltf) {
+        dice = gltf.scene;
+        dice.scale.set(1.5, 1.5, 1.5);
+        scene.add(dice);
+    });
 
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    dice = new THREE.Mesh(geometry, diceMaterials);
-    scene.add(dice);
-
+    rolling = false;
     canvas.addEventListener('click', rollDice);
-
     animate();
-}
-
-function createDiceFace(number) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 256;
-    const context = canvas.getContext('2d');
-
-    context.fillStyle = '#ffffff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    context.font = 'bold 150px Arial';
-    context.fillStyle = '#000000';
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText(number, canvas.width / 2, canvas.height / 2);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    return new THREE.MeshBasicMaterial({ map: texture });
 }
 
 function animate() {
@@ -69,28 +39,44 @@ function rollDice() {
     if (rolling) return;
     rolling = true;
 
-    const duration = 2000;
-    const start = Date.now();
-    const endRotationX = dice.rotation.x + Math.PI * (4 + Math.random() * 4);
-    const endRotationY = dice.rotation.y + Math.PI * (4 + Math.random() * 4);
+    const duration = 2500;
+    const startTime = Date.now();
 
-    function rollAnimation() {
-        const now = Date.now();
-        const elapsed = now - start;
-        const fraction = elapsed / duration;
+    const randomX = Math.PI * (4 + Math.random() * 2);
+    const randomY = Math.PI * (4 + Math.random() * 2);
+    const randomZ = Math.PI * (4 + Math.random() * 2);
 
-        if (fraction < 1) {
-            dice.rotation.x += 0.3;
-            dice.rotation.y += 0.3;
-            requestAnimationFrame(rollAnimation);
+    function animateDice() {
+        const elapsed = Date.now() - startTime;
+        const progress = elapsed / duration;
+
+        if (progress < 1) {
+            dice.rotation.x += 0.2;
+            dice.rotation.y += 0.2;
+            dice.rotation.z += 0.2;
+            requestAnimationFrame(animate);
         } else {
-            dice.rotation.x = endRotationX;
-            dice.rotation.y = endRotationY;
+            dice.rotation.set(randomX, randomY, randomZ);
             rolling = false;
         }
     }
 
-    rollAnimation();
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animateDice);
+        renderer.render(scene, camera);
+    }
+
+    function animateDice() {
+        if (rolling) animateRoll();
+        renderer.render(scene, camera);
+    }
+
+    function animateDice() {
+        requestAnimationFrame(animateDice);
+        renderer.render(scene, camera);
+    }
 }
 
 init();

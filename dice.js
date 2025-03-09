@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoundedBoxGeometry } from "three/examples/jsm/Addons.js";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 let scene, camera, renderer, dice, controls;
 let rolling = false;
@@ -36,7 +36,7 @@ function init() {
 
     const materials = diceTextures.map(texture => new THREE.MeshStandardMaterial({ map: texture }));
 
-    const geometry = new RoundedBoxGeometry(1, 1, 1, 10, 0.2);
+    const geometry = new RoundedBoxGeometry(1, 1, 1, 5, 0.2);
     dice = new THREE.Mesh(geometry, materials);
     scene.add(dice);
 

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { RoundedBoxGeometry } from "three/examples/jsm/Addons.js";
 
 let scene, camera, renderer, dice, controls;
 let rolling = false;

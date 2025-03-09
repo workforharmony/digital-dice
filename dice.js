@@ -83,10 +83,14 @@ function rollDice() {
             dice.rotation.z += 0.5;
             requestAnimationFrame(animateRoll);
         } else {
-            dice.rotation.x = Math.round(endX / (Math.PI / 2)) * (Math.PI / 2);
-            dice.rotation.y = Math.round(endY / (Math.PI / 2)) * (Math.PI / 2);
-            dice.rotation.z = Math.round(endZ / (Math.PI / 2)) * (Math.PI / 2);
+            dice.rotation.x = endX;
+            dice.rotation.y = endY;
+            dice.rotation.z = endZ;
             rolling = false;
+            setTimeout(() => {
+                camera.position.set(dice.position.x, dice.position.y + 2.5, dice.position.z);
+                camera.lookAt(dice.position);
+            }, 500);
         }
     }
 

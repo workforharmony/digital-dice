@@ -36,6 +36,8 @@ function init() {
 
     const geometry = new RoundedBoxGeometry(1, 1, 1, 6, 0.2);
     dice = new THREE.Mesh(geometry, diceTextures);
+    dice.castShadow = true;
+    dice.receiveShadow = true;
     scene.add(dice);
 
     window.addEventListener("resize", onWindowResize, false);
@@ -74,14 +76,14 @@ function rollDice() {
         const progress = elapsed / duration;
 
         if (progress < 1) {
-            dice.rotation.x += 0.2;
-            dice.rotation.y += 0.2;
-            dice.rotation.z += 0.2;
+            dice.rotation.x += 0.5;
+            dice.rotation.y += 0.5;
+            dice.rotation.z += 0.5;
             requestAnimationFrame(animateRoll);
         } else {
-            dice.rotation.x = endX;
-            dice.rotation.y = endY;
-            dice.rotation.z = endZ;
+            dice.rotation.x = Math.round(endX / (Math.PI / 2)) * (Math.PI / 2);
+            dice.rotation.y = Math.round(endY / (Math.PI / 2)) * (Math.PI / 2);
+            dice.rotation.z = Math.round(endZ / (Math.PI / 2)) * (Math.PI / 2);
             rolling = false;
         }
     }

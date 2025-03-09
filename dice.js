@@ -1,12 +1,17 @@
 let scene, camera, renderer, dice;
 let rolling = false;
 
+init();
+
 function init() {
     const canvas = document.getElementById('diceCanvas');
+
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-    camera.position.set(0, 1.5, 4);
+    camera = new THREE.PerspectiveCamera(
+        50, canvas.clientWidth / canvas.clientHeight, 0.1, 1000
+    );
+    camera.position.set(0, 1.5, 3.5);
 
     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
@@ -17,17 +22,22 @@ function init() {
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     });
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-
     const loader = new THREE.GLTFLoader();
-    loader.load('https://cdn.jsdelivr.net/gh/Rajavasanthan/3D-Dice@main/dice.glb', function (gltf) {
-        dice = gltf.scene;
-        dice.scale.set(0.5, 0.5, 0.5);
-        scene.add(dice);
-    });
+    loader.load(
+        'https://cdn.jsdelivr.net/gh/mrdoob/three.js@dev/examples/models/gltf/Dice.glb',
+        function (gltf) {
+            dice = gltf.scene;
+            dice.scale.set(1.5, 1.5, 1.5);
+            scene.add(dice);
+        },
+        undefined,
+        function (error) {
+            console.error(error);
+        }
+    );
 
     canvas.addEventListener('click', rollDice);
+
     animate();
 }
 
@@ -37,43 +47,31 @@ function animate() {
 }
 
 function rollDice() {
-    if (rolling) return;
+    if (rolling || !dice) return;
     rolling = true;
 
-    const rollTime = 2000;
-    const startTime = Date.now();
+    const duration = 2000;
+    const start = Date.now();
+    const endRotationX = dice.rotation.x + Math.PI * (4 + Math.random() * 4);
+    const endRotationY = dice.rotation.y + Math.PI * (4 + Math.random() * 4);
+    const endRotationZ = dice.rotation.z + Math.PI * (4 + Math.random() * 4);
 
-    const endX = dice.rotation.x + Math.PI * (4 + Math.random() * 4);
-    const endY = dice.rotation.y + Math.PI * (4 + Math.random() * 4);
-    const endZ = dice.rotation.z + Math.PI * (4 + Math.random() * 4);
+    function rollAnimation() {
+        const elapsed = Date.now() - start;
+        const progress = elapsed / duration;
 
-    function animateRoll() {
-        const elapsed = Date.now() - startTime;
-        const fraction = elapsed / rollTime;
-
-        if (fraction < 1) {
+        if (progress < 1) {
             dice.rotation.x += 0.2;
             dice.rotation.y += 0.2;
             dice.rotation.z += 0.2;
             requestAnimationFrame(rollAnimation);
         } else {
-            dice.rotation.x = endX;
-            dice.rotation.y = endY;
+            dice.rotation.x = endRotationX;
+            dice.rotation.y = endRotationY;
+            dice.rotation.z = endRotationZ;
             rolling = false;
         }
     }
 
     rollAnimation();
-
-    function rollAnimation() {
-        requestAnimationFrame(animateDice);
-        renderer.render(scene, camera);
-    }
-
-    function rollAnimation() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
 }
-
-init();

@@ -16,6 +16,8 @@ function init() {
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.enableZoom = false;
+    controls.enableRotate = false;
 
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(5, 5, 5);
@@ -81,13 +83,10 @@ function rollDice() {
             dice.rotation.z += 0.5;
             requestAnimationFrame(animateRoll);
         } else {
-            dice.rotation.x = endX;
-            dice.rotation.y = endY;
-            dice.rotation.z = endZ;
+            dice.rotation.x = Math.round(endX / (Math.PI / 2)) * (Math.PI / 2);
+            dice.rotation.y = Math.round(endY / (Math.PI / 2)) * (Math.PI / 2);
+            dice.rotation.z = Math.round(endZ / (Math.PI / 2)) * (Math.PI / 2);
             rolling = false;
-            setTimeout(() => {
-                controls.reset(); // Reset orbit control to ensure only one face is visible
-            }, 500);
         }
     }
 

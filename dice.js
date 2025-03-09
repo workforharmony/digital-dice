@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 let scene, camera, renderer, dice, controls;
 let rolling = false;
@@ -24,18 +25,18 @@ function init() {
     scene.add(ambientLight);
 
     const textureLoader = new THREE.TextureLoader();
-const diceTextures = [
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-1.png"), // 1 dot
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-2.png"), // 2 dots
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-3.png"), // 3 dots
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-4.png"), // 4 dots
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-5.png"), // 5 dots
-    textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-6.png")  // 6 dots
-];
+    const diceTextures = [
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-1.png"),
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-2.png"),
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-3.png"),
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-4.png"),
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-5.png"),
+        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-6.png")
+    ];
 
     const materials = diceTextures.map(texture => new THREE.MeshStandardMaterial({ map: texture }));
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const geometry = new RoundedBoxGeometry(1, 1, 1, 10, 0.2);
     dice = new THREE.Mesh(geometry, materials);
     scene.add(dice);
 
@@ -57,10 +58,8 @@ function rollDice() {
     const duration = 2000;
     const startTime = Date.now();
 
-    // Choose a random final face (1-6)
     const finalFace = Math.floor(Math.random() * 6) + 1;
-
-    // Set final rotation angles to align with each face
+    
     const faceRotations = {
         1: { x: 0, y: 0, z: 0 },
         2: { x: 0, y: Math.PI / 2, z: 0 },
@@ -77,13 +76,11 @@ function rollDice() {
         const progress = elapsed / duration;
 
         if (progress < 1) {
-            // Continue spinning
             dice.rotation.x += 0.2;
             dice.rotation.y += 0.2;
             dice.rotation.z += 0.2;
             requestAnimationFrame(animateRoll);
         } else {
-            // Snap to the correct face
             dice.rotation.x = endX;
             dice.rotation.y = endY;
             dice.rotation.z = endZ;
@@ -93,7 +90,6 @@ function rollDice() {
 
     animateRoll();
 }
-
 
 function animate() {
     requestAnimationFrame(animate);

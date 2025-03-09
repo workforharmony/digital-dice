@@ -63,25 +63,29 @@ function rollDice() {
     const finalFace = Math.floor(Math.random() * 6) + 1;
     
     const faceRotations = {
-        1: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, 0)),
-        2: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI / 2, 0)),
-        3: new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0)),
-        4: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
-        5: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, -Math.PI / 2, 0)),
-        6: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, 0))
+        1: { x: 0, y: 0, z: 0 },
+        2: { x: 0, y: Math.PI / 2, z: 0 },
+        3: { x: -Math.PI / 2, y: 0, z: 0 },
+        4: { x: Math.PI / 2, y: 0, z: 0 },
+        5: { x: 0, y: -Math.PI / 2, z: 0 },
+        6: { x: Math.PI, y: 0, z: 0 }
     };
 
-    const targetQuaternion = faceRotations[finalFace];
+    const { x: endX, y: endY, z: endZ } = faceRotations[finalFace];
 
     function animateRoll() {
         const elapsed = Date.now() - startTime;
         const progress = elapsed / duration;
 
         if (progress < 1) {
-            dice.quaternion.slerp(targetQuaternion, progress);
+            dice.rotation.x += (endX - dice.rotation.x) * 0.15;
+            dice.rotation.y += (endY - dice.rotation.y) * 0.15;
+            dice.rotation.z += (endZ - dice.rotation.z) * 0.15;
             requestAnimationFrame(animateRoll);
         } else {
-            dice.quaternion.copy(targetQuaternion);
+            dice.rotation.x = endX;
+            dice.rotation.y = endY;
+            dice.rotation.z = endZ;
             rolling = false;
             setTimeout(() => {
                 camera.position.set(3, 3, 6);

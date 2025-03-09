@@ -8,7 +8,7 @@ let rolling = false;
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(3, 3, 5);
+    camera.position.set(3, 3, 6);
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -88,7 +88,7 @@ function rollDice() {
             dice.rotation.z = endZ;
             rolling = false;
             setTimeout(() => {
-                camera.position.set(dice.position.x, dice.position.y + 2.5, dice.position.z);
+                camera.position.set(3, 4, 6);
                 camera.lookAt(dice.position);
             }, 500);
         }

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { RoundedBoxGeometry } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 let scene, camera, renderer, dice, controls;
 let rolling = false;
@@ -26,18 +26,16 @@ function init() {
 
     const textureLoader = new THREE.TextureLoader();
     const diceTextures = [
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-1.png"),
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-2.png"),
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-3.png"),
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-4.png"),
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-5.png"),
-        textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-6.png")
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-1.png") }),
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-2.png") }),
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-3.png") }),
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-4.png") }),
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-5.png") }),
+        new THREE.MeshStandardMaterial({ map: textureLoader.load("https://raw.githubusercontent.com/workforharmony/digital-dice/main/images/inverted-dice-6.png") })
     ];
 
-    const materials = diceTextures.map(texture => new THREE.MeshStandardMaterial({ map: texture }));
-
-    const geometry = new RoundedBoxGeometry(1, 1, 1, 5, 0.2);
-    dice = new THREE.Mesh(geometry, materials);
+    const geometry = new RoundedBoxGeometry(1, 1, 1, 6, 0.2);
+    dice = new THREE.Mesh(geometry, diceTextures);
     scene.add(dice);
 
     window.addEventListener("resize", onWindowResize, false);

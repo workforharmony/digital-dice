@@ -10,10 +10,14 @@ function init() {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(1, 2, 6);
 
+    // Create renderer with transparency enabled
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0); // Set transparent background
+    renderer.setClearColor(0x000000, 0); // Transparent background
     document.body.appendChild(renderer.domElement);
+
+    // Force the canvas element's background to be transparent
+    renderer.domElement.style.backgroundColor = "transparent";
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;

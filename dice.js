@@ -1,50 +1,63 @@
 let scene, camera, renderer, dice;
-let isRolling = false;
+let rolling = false;
 
 function init() {
     const canvas = document.getElementById('diceCanvas');
 
-    // Create scene
     scene = new THREE.Scene();
 
-    // Camera
     camera = new THREE.PerspectiveCamera(
-        50,
+        45,
         canvas.clientWidth / canvas.clientHeight,
         0.1,
         1000
     );
-    camera.position.z = 5;
+    camera.position.set(0, 0, 7);
 
-    // Renderer
     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-    // Resize handling for perfect responsiveness
     window.addEventListener('resize', () => {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     });
 
-    // Dice geometry and appearance
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
     const diceMaterials = [
-        new THREE.MeshBasicMaterial({ color: '#ff5555' }), // Side 1
-        new THREE.MeshBasicMaterial({ color: '#55ff55' }), // Side 2
-        new THREE.MeshBasicMaterial({ color: '#5555ff' }), // Side 3
-        new THREE.MeshBasicMaterial({ color: '#ffff55' }), // Side 4
-        new THREE.MeshBasicMaterial({ color: '#55ffff' }), // Side 5
-        new THREE.MeshBasicMaterial({ color: '#ff55ff' }), // Side 6
+        createDiceFace('1'),
+        createDiceFace('2'),
+        createDiceFace('3'),
+        createDiceFace('4'),
+        createDiceFace('5'),
+        createDiceFace('6'),
     ];
 
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
     dice = new THREE.Mesh(geometry, diceMaterials);
     scene.add(dice);
 
-    animate();
-
-    // Click or tap listener to roll dice
     canvas.addEventListener('click', rollDice);
+
+    animate();
+}
+
+function createDiceFace(number) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const context = canvas.getContext('2d');
+
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.font = 'bold 150px Arial';
+    context.fillStyle = '#000000';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(number, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    return new THREE.MeshBasicMaterial({ map: texture });
 }
 
 function animate() {
@@ -53,34 +66,31 @@ function animate() {
 }
 
 function rollDice() {
-    if (isRolling) return;
-    isRolling = true;
+    if (rolling) return;
+    rolling = true;
 
-    const rollDuration = 2000; // Rolling for 2 seconds
-    const randomRotationX = Math.PI * 4 + Math.random() * Math.PI * 2;
-    const randomRotationY = Math.PI * 4 + Math.random() * Math.PI * 2;
+    const duration = 2000;
+    const start = Date.now();
+    const endRotationX = dice.rotation.x + Math.PI * (4 + Math.random() * 4);
+    const endRotationY = dice.rotation.y + Math.PI * (4 + Math.random() * 4);
 
-    const initialRotationX = dice.rotation.x;
-    const initialRotationY = dice.rotation.y;
+    function rollAnimation() {
+        const now = Date.now();
+        const elapsed = now - start;
+        const fraction = elapsed / duration;
 
-    const startTime = Date.now();
-
-    function animateRoll() {
-        const elapsed = Date.now() - startTime;
-        const progress = elapsed / rollDuration;
-
-        if (progress < 1) {
-            dice.rotation.x = initialRotationX + randomRotationX * progress;
-            dice.rotation.y = initialRotationY + randomRotationY * progress;
-            requestAnimationFrame(animateRoll);
+        if (fraction < 1) {
+            dice.rotation.x += 0.3;
+            dice.rotation.y += 0.3;
+            requestAnimationFrame(rollAnimation);
         } else {
-            dice.rotation.x = initialRotationX + randomRotationX;
-            dice.rotation.y = initialRotationY + randomRotationY;
-            isRolling = false;
+            dice.rotation.x = endRotationX;
+            dice.rotation.y = endRotationY;
+            rolling = false;
         }
     }
 
-    animateRoll();
+    rollAnimation();
 }
 
 init();
